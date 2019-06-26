@@ -1,5 +1,5 @@
 # STC3-CECG
-
+* [論文全文pdf](https://github.com/a362758199/STC3-CECG/blob/master/%E9%9B%A2%E6%A0%A1%E7%89%88%E8%AB%96%E6%96%87%E6%9C%AC%E6%96%87627.pdf)
 * [情感型聊天机器人调查问卷](https://docs.google.com/forms/d/e/1FAIpQLSc1oNbpzHLD4xNwdjNIHjc63ZCseXR9jTyYFLQfcycAfscXiA/viewform?usp=sf_link)
 
 #### 資料集預覽圖
