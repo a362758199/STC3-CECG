@@ -7,3 +7,6 @@
 
 #### 論文系統架構圖
 * ![image](https://github.com/a362758199/STC3-CECG/blob/master/charts/%E4%B8%AD%E4%B8%80%E8%AB%96%E6%96%87%E7%B3%BB%E7%B5%B1%E6%9E%B6%E6%A7%8B%E5%9C%96.png)
+
+#### Flask app网页介面展示
+* ![image](https://github.com/a362758199/STC3-CECG/blob/master/charts/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7_2019-08-27_03-39-08.png)
