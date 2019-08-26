@@ -1,4 +1,4 @@
-# 主程式目录：
+# 项目程式目录：
 * --GenMethod：生成模式的方法，包含NTCIR竞赛与本论文两种不同版本
 * --five_emotional_classifier.py：情感分类器训练程式码
 * --pytorch_chatbot：SeqSeq聊天机器人核心代码，包含载入、训练、测试
