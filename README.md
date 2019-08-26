@@ -12,21 +12,24 @@ NTCIR是一個針對資訊架構（Information Architecture，IA）技術的競�
 
 ## 深度学习模型
 
+### Word Embedding
+
 本研究中使用到的是一種分散式詞表示法。該方法以深度學習為基礎，將文本中的每個詞訓練成不同的短向量，并將它們集中在一個向量空間中。在這個空間里有距離的概念，如餘弦相似度（Cosine similarity）。這樣一來，就可以用詞之間的距離表示相關度。
 最常用的詞向量訓練法有兩種：連續詞袋法（continuous bag of words, CBOW）和跳躍詞法（Skip-Gram）。兩者的原理類似，實現的方式相反，可參考相關文獻。
 
-### Word Embedding
 * ![image](https://github.com/a362758199/STC3-CECG/blob/master/charts/%E4%BD%99%E5%BC%A6%E7%9B%B8%E4%BC%BC%E5%BA%A6.png)
 
+### GRU with attention generator
 Seq2Seq 可以簡單看做是一個由編碼器及解碼器（Encoder–Decoder）兩個RNN結構組成的網路。其輸入是一個序列，輸出也是一個序列。編碼器的作用是將一個可變長度的序列轉成固定長度的情境向量（context vector）。而解碼器則將這個固定長度的情境向量c變成可變長度的目標序列。下圖問本研究中用到的解碼器類型，加入了一個Att模塊。
 
-### GRU with attention generator
+
 * ![image](https://github.com/a362758199/STC3-CECG/blob/master/charts/attention-decoder-network.png)
+
+### CNN sentiment classifier
 
 Kim.Y在2014年提出一種使用CNN對句子進行分類的方法。卷積神經網路在影像處理中，使用不同的濾鏡來使圖像凸顯不同的特徵，文字也是一樣。圖8中CNN的第一層原始矩陣在通過濾鏡之後會得到第二層的矩陣，我們稱之為特徵圖。特徵圖通過第三層池化層之後，會得到更小的特徵圖，就像人眼在觀察圖片時首先觀察到的那些耀眼部分。在這個文字分類器中，我們所需要學習的部分就是這個濾鏡，也就是CNN中的卷積核。
 由左至右，第一層輸入層是將一個句子所有單詞的詞向量進行拼接的矩陣，每一橫行代表一個詞。第二層卷積層，每個卷積核的大小為filter_size * embedding_size，filter_size代表卷積核縱向上一次要看的單詞個數，即認為相鄰幾個詞之間有詞序關係，embedding_size就是詞向量的維度。每個卷積核計算完成之後就得到1個行向量，代表著該卷積核從句子中提取出來的濾鏡特徵，有多少個卷積核就能提取出多少種濾鏡特徵。第三層池化層的操作就是將卷積得到的豎行向量的最大值提取出來，通過池化之後會獲得一個維度等於卷積核數量的橫列向量，即將每個卷積核的最大值連接起來。最後一層全連接層，為了得到預期的結果，將池化層的輸出向量透過一個softmax，得到兩個和為1的數值，在本文中，即是該句子屬於該分類和不屬於該分類的機率值。
 
-### CNN sentiment classifier
 * ![image](https://github.com/a362758199/STC3-CECG/blob/master/charts/CNN%20classification.png)
 
 ## 实验&评估
