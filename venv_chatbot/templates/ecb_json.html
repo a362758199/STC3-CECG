@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<title>test page for emotional chatbot</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+	$(document).ready(function(){ 						   
+		$("p").css("border", "1px solid red");
+	});
+
+	function init()
+	{
+	  //document.getElementById("status").innerHTML = 'init';
+	  $("#status").text('jquery init done'); 
+	  $("#result").text("wait for query"); 
+	}
+
+
+    function sentence_to_label()
+    {
+
+
+
+    }
+
+
+	function json_list_model()
+	{
+	   $('#status').text('sending /api/list_model request...');
+	   $('#btn_list').disabled = true;
+           argument = {}
+           $.ajax({
+                url: '/api/list_model',   //存取Json的網址             
+                type: 'post',
+                cache:false,
+                dataType: 'json', // format expected from server
+                contentType: 'application/json; charset=utf-8', // format sent to server
+                data: JSON.stringify(argument),
+                success: function (data) {
+                    //方法二 (回傳多筆資料)
+		    html = '<table border=1>'
+		    html += '<thead><tr><th>model</th><th>epochs</th></tr></thread><tbody>\n'
+                    var i = 0;                    
+                    $.each(data, function () {
+                        html +=  '<tr><td>' + data[i]['model'] + '</td>'
+				+ '<td>' + data[i]['epoch'] + '</td></tr>\n'    
+                        i++;
+                    });
+		    html += '</tbody></table>\n'
+		    
+		    document.getElementById("list_model").innerHTML = html;
+	            $("#status").text('done /api/list_model request.');
+		    $('#btn_list').disabled = false
+                },
+
+                error: function (xhr, ajaxOptions, thrownError) {
+		    document.getElementById("result").innerHTML = 
+			'internal error(' + xhr.status + ',' + thrownError + '), try again...';
+                    //alert(xhr.status);
+                    //alert(thrownError);
+		    $('#btn_list').disabled = false;
+                }
+            });
+
+	}
+
+        function json_translate() 
+ 	{
+            argument = { 'model': $('#model').val(),
+		'epoch': $('#epoch').val(),
+		'topn': $('#topn').val(),
+		'query': $('#query').val() };
+
+	    $("#status").text('sending /api/translate request...');
+	    $('#btn_translate').disabled = true;
+	    $("#result").text('wait for reply...');
+            $.ajax({
+                url: '/api/translate',   //存取Json的網址             
+                type: 'post',
+                cache:false,
+                dataType: 'json', // format expected from server
+                contentType: 'application/json; charset=utf-8', // format sent to server
+                data: JSON.stringify(argument),
+                success: function (data) {
+		    header = JSON.stringify(argument) + '\n'
+		    qfilter = data['filter']
+		    header += 'filter: &lt;' + qfilter + '&gt;\n'
+		    html = header + '<table border=1>'
+		    html += '<thead><tr><th>topn</th><th>response</th></tr></thread><tbody>\n'
+                    var i = 0; 
+		    result = data['result']                   
+                    $.each(result, function () {
+                        html +=  '<tr><td>' + (i+1) + '</td>'
+				+ '<td>' + result[i] + '</td></tr>\n'    
+                        i++;
+                    });
+		    html += '</tbody></table>\n'
+		    
+		    //document.getElementById("result").innerHTML = html;
+		    $('#result').html(html)
+		    $('#model').val(data['model'])
+		    $('#epoch').val(data['epoch'])
+		    $('#topn').val(data['topn'])
+		    $('#query').val(data['query'])
+	            $("#status").text('done /api/translate request.');
+
+	            $('#btn_translate').disabled = false;
+	            last_result = $('#result').html();
+	            overwrite = last_result + '<hr/>' + $('#history').html();
+	            $('#history').html(overwrite);
+                },
+
+                error: function (xhr, ajaxOptions, thrownError) {
+		    document.getElementById("result").innerHTML = 
+			'internal error(' + xhr.status + ',' + thrownError + '), try again...';
+                    //alert(xhr.status);
+                    //alert(thrownError);
+		    $('#btn_translate').disabled = false;
+                }
+            });
+
+        }
+
+    </script>
+<body onload='init()'>
+<pre>
+Test page for emotional chatbot
+<p>Status: <span id='status'></span></p>
+<p><button id='btn_gen_label' onclick='sentence_to_label()'>generate emotion label</button>
+Available Models: <span id='list_model'></span></p>
+<p><button id='btn_translate' onclick='json_translate()'>translate by json</button>
+model: <input id='model' type='text' name='model' value='{{param["model"]}}' />
+epoch: <input id='epoch' type='text' name='epoch' value='{{param["epoch"]}}' />
+topn: <input id='topn' type='text' name='topn' value='{{param["topn"]}}' />
+query: <input id='query' type='text' name='query' value='{{param["query"]}}'/>
+Result: <pre id='result'></pre></p>
+<p>History:
+<pre id='history'></pre></p>
+</pre>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<html>
+<title>translate2019</title>
+<body>
+<pre>
+Test page for pytorch chatbot on translate2019 dataset
+<form action='translate' method='post'>
+model: <input type='text' name='model' value='{{param["model"]}}' />
+epoch: <input type='text' name='epoch' value='{{param["epoch"]}}' />
+topn:  <input type='text' name='topn'  value='{{param["topn "]}}' />
+query: <input type='text' name='query' value='{{param["query"]}}' />
+
+<input type='submit' value='translate' />
+</form>
+{{param['result']}}
+</pre>
+</body>
+</html>
